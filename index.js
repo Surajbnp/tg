@@ -1,6 +1,3 @@
-
-
-
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
@@ -10,11 +7,14 @@ const gameName = "zuratap";
 const webURL = "https://hackrunv3.s3.ap-south-1.amazonaws.com/index.html";
 
 const server = express();
-const bot = new TelegramBot(process.env.BOT_TOKEN || "7461446719:AAHQLQxYUG_OgxCI8XKD_l05sm06HK8uLKw", { polling: true });
+const bot = new TelegramBot(
+  process.env.BOT_TOKEN || "7461446719:AAHQLQxYUG_OgxCI8XKD_l05sm06HK8uLKw",
+  { polling: true }
+);
 
 const port = process.env.PORT || 5000;
 
-const SCORE_TOKEN =  999999999;
+const SCORE_TOKEN = 999999999;
 
 const queries = {};
 
@@ -109,6 +109,8 @@ server.get("/highscore/:score", function (req, res, next) {
   }
 });
 
-server.listen(port, (req, res) => {
-  console.log('server is running on port')
+server.get("/", (req, res) => {
+  res.send("running success");
 });
+
+server.listen(port);
