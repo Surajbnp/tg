@@ -7,10 +7,14 @@ const gameName = "zuratap";
 const webURL = "https://hackrunv3.s3.ap-south-1.amazonaws.com/index.html";
 
 const server = express();
-const bot = new TelegramBot(
-  "7461446719:AAHQLQxYUG_OgxCI8XKD_l05sm06HK8uLKw",
-  { polling: true }
-);
+server.use(express.json()); // Add this line to parse JSON bodies
+
+const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
+  webHook: true
+});
+
+const domain = 'https://tg-9irl2qejb-surajbnps-projects.vercel.app/'; // Replace with your Vercel app URL
+bot.setWebHook(`${domain}/bot${process.env.TELEGRAM_BOT_TOKEN}`);
 
 const port = process.env.PORT || 5000;
 
@@ -20,7 +24,6 @@ const queries = {};
 
 function addAllNumbers(number) {
   const strNumber = number.toString();
-
   if (strNumber.length === 1) return number;
 
   const numbers = strNumber.split("");
@@ -46,7 +49,7 @@ bot.on("callback_query", function (query) {
     );
   } else {
     queries[query.id] = query;
-    const gameurl = `https://hackrunv3.s3.ap-south-1.amazonaws.com/index.html?id=${query.id}`;
+    const gameurl = `${webURL}?id=${query.id}`;
     bot.answerCallbackQuery(query.id, { url: gameurl });
   }
 });
@@ -77,15 +80,10 @@ server.get("/highscore/:score", function (req, res, next) {
     };
   }
 
-  // ===== Obfuscation decoding starts =====
-  // Change this part if you want to use your own obfuscation method
   const obfuscatedScore = BigInt(req.params.score);
-
   const realScore = Math.round(Number(obfuscatedScore / token));
 
-  // If the score is valid
   if (BigInt(realScore) * token == obfuscatedScore) {
-    // ===== Obfuscation decoding ends =====
     bot
       .setGameScore(query.from.id, realScore, options)
       .then((b) => {
@@ -107,6 +105,11 @@ server.get("/highscore/:score", function (req, res, next) {
   } else {
     return res.status(400).send("Are you cheating?");
   }
+});
+
+server.post(`/bot${process.env.TELEGRAM_BOT_TOKEN}`, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
 });
 
 server.listen(port, () => {
