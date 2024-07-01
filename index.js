@@ -1,51 +1,4 @@
-// const TelegramBot = require("node-telegram-bot-api");
-// const token = "7461446719:AAHQLQxYUG_OgxCI8XKD_l05sm06HK8uLKw";
-// const gameLink = "https://hackrunv3.s3.ap-south-1.amazonaws.com/index.html";
-// const gameShortName = "zuratap"; // Replace with your actual game short name
 
-// const bot = new TelegramBot(token, { polling: true });
-
-// bot.on("callback_query", function (callbackQuery) {
-//   console.log(callbackQuery);
-//   const chatId = callbackQuery.message.chat.id;
-//   const messageId = callbackQuery.message.message_id;
-
-//   // Answer the callback query and provide the game URL
-//   bot.answerCallbackQuery(callbackQuery.id, { url: gameLink })
-//     .then(() => {
-//       // Send the game message to the user
-//       bot.sendGame(chatId, gameShortName, {
-//         reply_to_message_id: messageId,
-//         reply_markup: {
-//           inline_keyboard: [[{ text: "Play Game", callback_game: { gameShortName } }]],
-//         },
-//       });
-//     })
-//     .catch(error => {
-//       console.error("Error answering callback query:", error);
-//     });
-// });
-
-// // Optional: Handle inline queries
-// bot.on("inline_query", function (inlineQuery) {
-//   const results = [
-//     {
-//       type: "game",
-//       id: "0",
-//       game_short_name: gameShortName,
-//     },
-//   ];
-//   bot.answerInlineQuery(inlineQuery.id, results)
-//     .catch(error => {
-//       console.error("Error answering inline query:", error);
-//     });
-// });
-
-// bot.on("polling_error", (error) => {
-//   console.error("Polling error:", error);
-// });
-
-// console.log("Bot is running...");
 
 
 require("dotenv").config();
@@ -156,4 +109,6 @@ server.get("/highscore/:score", function (req, res, next) {
   }
 });
 
-server.listen(port);
+server.listen(port, (req, res) => {
+  console.log('server is running on port')
+});
