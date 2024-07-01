@@ -109,8 +109,8 @@ server.get("/highscore/:score", function (req, res, next) {
   }
 });
 
-server.get("/", (req, res) => {
-  res.send("running success");
-});
+// server.get("/", (req, res) => {
+//   res.send("running success");
+// });
 
 server.listen(port);
