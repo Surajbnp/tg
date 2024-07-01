@@ -8,7 +8,7 @@ const webURL = "https://hackrunv3.s3.ap-south-1.amazonaws.com/index.html";
 
 const server = express();
 const bot = new TelegramBot(
-  process.env.BOT_TOKEN || "7461446719:AAHQLQxYUG_OgxCI8XKD_l05sm06HK8uLKw",
+  "7461446719:AAHQLQxYUG_OgxCI8XKD_l05sm06HK8uLKw",
   { polling: true }
 );
 
@@ -24,8 +24,8 @@ function addAllNumbers(number) {
   if (strNumber.length === 1) return number;
 
   const numbers = strNumber.split("");
-  var sum = 0;
-  for (var i = 0; i < numbers.length; i++) {
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
     sum += parseInt(numbers[i], 10);
   }
   return addAllNumbers(sum);
@@ -105,12 +105,10 @@ server.get("/highscore/:score", function (req, res, next) {
       });
     return;
   } else {
-    return res.status(400).send("Are you cheating ?");
+    return res.status(400).send("Are you cheating?");
   }
 });
 
-// server.get("/", (req, res) => {
-//   res.send("running success");
-// });
-
-server.listen(port);
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
